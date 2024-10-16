@@ -1,41 +1,29 @@
-import { useState } from "react"
-import ToDoForm from "./ToDoForm"
-import ToDo from './ToDo'
 
-function App() {
-    const [todos, setTodos] = useState([]);
+import { useEffect, useState } from "react"
+import { fetchArticles } from "./services/api";
 
-    const addTask = () => {
-
-    }
-
-    const removeTask = () => {
-
-
-    }
-
-
-    const handleToggle = () => {
-
-    }
-
+const App = () => {
+    const [articles, setArticles] = useState([]);
+    useEffect(() => {
+        const getData = async() => {
+            const { data } = await fetchArticles;
+            console.log(data.hits)
+            setArticles(data.hits)
+        }
+        getData()
+    }, []);
     return (
-        <div className='wrapper'>
-            <header>
-                <h1>Список задач {todos.length}</h1>
-            </header>
-            <ToDoForm addTask/>
-            {todos.map(() => {
-                return <ToDo key={todos.id} />;
-            })}
-            <ToDo 
-            todo={todo}
-            key={todo.id}
-            toogleTask={handleToggle}
-            removeTask={removeTask}
-            />
-        </div>
-    )
+      <div>
+        <h1>HTTP</h1>
+        <ul>
+          {articles.map((item) => (
+            <li key={item.objectID}>
+              <a href={item.url} target="_blank">{item.title}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
 }
 
 export default App
