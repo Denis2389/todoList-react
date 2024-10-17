@@ -1,29 +1,30 @@
-
+import axios from "axios"
 import { useEffect, useState } from "react"
-import { fetchArticles } from "./services/api";
 
 const App = () => {
-    const [articles, setArticles] = useState([]);
-    useEffect(() => {
-        const getData = async() => {
-            const { data } = await fetchArticles;
-            console.log(data.hits)
-            setArticles(data.hits)
-        }
-        getData()
-    }, []);
+  const [articles, setArticles] = useState([])
+
+  useEffect(() => {
+    async function fetchArticles() {
+      const response = await axios.get("https://hn.algolia.com/api/v1/search?query=react")
+      setArticles(response.data.hits)
+    }
+    
+    fetchArticles()
+  }, []);
     return (
       <div>
-        <h1>HTTP</h1>
-        <ul>
-          {articles.map((item) => (
-            <li key={item.objectID}>
-              <a href={item.url} target="_blank">{item.title}</a>
+        <h1>Latest articles</h1>
+
+        {articles.length > 0 && (
+          <ul>{articles.map(({ objectID, url, title }) => (
+            <li key={objectID}>
+              <a href={url} target="_blank" rel="noreferrer noopener">{title}</a>
             </li>
-          ))}
-        </ul>
+          ))}</ul>
+        )}
       </div>
-    );
+    )
 }
 
 export default App
