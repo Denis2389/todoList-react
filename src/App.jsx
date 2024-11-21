@@ -1,29 +1,17 @@
-import { useState } from "react"
+import { Routes, Route } from 'react-router-dom'
+import { Home } from './component/Home'
+import { LoginPage } from './component/LoginPage'
 
 const App = () => {
-  
-  const [tasks, setTasks] = useState([])
-  const [newTask, setNewTask] = useState('')
-
-  const addTask = () => {
-    if (newTask.trim() !== '') {
-      setTasks([...tasks, newTask.trim()])
-      setNewTask('')
-    }
-  }
 
   return (
     <div>
-      <input onChange={(e) => setNewTask(e.target.value)} type="text" value={newTask}/>
-      <button onClick={addTask}>Add</button>
-
-      <ul>
-        {tasks.map((task, index) => (
-          <li key={index}>{task}</li>
-        ))}
-      </ul>
+      <Routes>
+        <Route path='/' element={<LoginPage />} />
+        <Route path='/home' element={<Home />} />
+      </Routes>
     </div>
-  )
+  );
 }
 
 export default App
